@@ -1,0 +1,28 @@
+#-------------------------------------------------dotnet.yml-------------------------------------------------: github-actions .NET
+
+name: Build .NET Core
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'  # Altere para a versão do .NET Core que você está usando
+
+    - name: Restore dependencies
+      run: dotnet restore **/*.csproj
+
+    - name: Build
+      run: dotnet build **/*.csproj --configuration Release --no-restore
+
+    - name: Run tests
+      run: dotnet test **/*.csproj --no-restore --verbosity normal
